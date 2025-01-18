@@ -1,0 +1,15 @@
+public class RemoveDuplicateWords {
+    public static void main(String[] args) {
+        String sentence = "abc abc ab abc ab acs acs";
+        String[] words = sentence.split(" ");
+        
+        StringBuilder result = new StringBuilder();
+        for (String word : words) {
+            if (!result.toString().contains(word)) {
+                result.append(word).append(" ");
+            }
+        }
+        
+        System.out.println(result.toString().trim());
+    }
+}
