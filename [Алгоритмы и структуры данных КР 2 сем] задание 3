@@ -1,0 +1,22 @@
+import java.util.Arrays;
+import java.util.Comparator;
+
+public class SortNumbersByDigitSum {
+    public static void main(String[] args) {
+        String numbers = "56 65 74 100 99 68 86 180 90";
+        String[] numberArray = numbers.split(" ");
+        
+        Arrays.sort(numberArray, Comparator.comparingInt(SortNumbersByDigitSum::calculateDigitSum));
+        
+        String sortedNumbers = String.join(" ", numberArray);
+        System.out.println(sortedNumbers);
+    }
+    
+    private static int calculateDigitSum(String number) {
+        int sum = 0;
+        for (char digit : number.toCharArray()) {
+            sum += Character.getNumericValue(digit);
+        }
+        return sum;
+    }
+}
