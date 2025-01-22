@@ -1,0 +1,81 @@
+public class BalancedTreeChecker {
+    public static class TreeNode {
+        int value;
+        TreeNode left;
+        TreeNode right;
+        
+        public TreeNode(int value) {
+            this.value = value;
+        }
+    }
+    
+    public static boolean isBalanced(TreeNode root) {
+        return checkHeight(root) != -1;
+    }
+    
+    private static int checkHeight(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        
+        int leftHeight = checkHeight(node.left);
+        if (leftHeight == -1) {
+            return -1;
+        }
+        
+        int rightHeight = checkHeight(node.right);
+        if (rightHeight == -1) {
+            return -1;
+        }
+        
+        if (Math.abs(leftHeight - rightHeight) > 1) {
+            return -1;
+        }
+        
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+    
+    // Вспомогательный метод для создания тестового дерева
+    public static TreeNode createTestTree(boolean balanced) {
+        if (balanced) {
+            TreeNode root = new TreeNode(1);
+            root.left = new TreeNode(2);
+            root.right = new TreeNode(3);
+            root.left.left = new TreeNode(4);
+            root.left.right = new TreeNode(5);
+            root.right.left = new TreeNode(6);
+            return root;
+        } else {
+            TreeNode root = new TreeNode(1);
+            root.left = new TreeNode(2);
+            root.left.left = new TreeNode(3);
+            root.left.left.left = new TreeNode(4);
+            return root;
+        }
+    }
+    
+    // Вспомогательный метод для печати дерева
+    public static void printTree(TreeNode node, String prefix, boolean isLeft) {
+        if (node == null) {
+            return;
+        }
+        
+        System.out.println(prefix + (isLeft ? "├── " : "└── ") + node.value);
+        
+        printTree(node.left, prefix + (isLeft ? "│   " : "    "), true);
+        printTree(node.right, prefix + (isLeft ? "│   " : "    "), false);
+    }
+    
+    public static void main(String[] args) {
+        // Тест сбалансированного дерева
+        TreeNode balancedTree = createTestTree(true);
+        System.out.println("Сбалансированное дерево:");
+        printTree(balancedTree, "", false);
+        System.out.println("Дерево сбалансировано: " + isBalanced(balancedTree));
+        
+        System.out.println("\nНесбалансированное дерево:");
+        TreeNode unbalancedTree = createTestTree(false);
+        printTree(unbalancedTree, "", false);
+        System.out.println("Дерево сбалансировано: " + isBalanced(unbalancedTree));
+    }
+}
