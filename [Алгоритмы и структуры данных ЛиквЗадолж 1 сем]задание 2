@@ -1,0 +1,54 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class ListSplitter {
+    public static <T> List<List<T>> splitList(List<T> list, int parts) {
+        if (list == null) {
+            throw new IllegalArgumentException("Список не может быть null");
+        }
+        
+        if (parts <= 0) {
+            throw new IllegalArgumentException("Количество частей должно быть положительным числом");
+        }
+        
+        if (parts > list.size()) {
+            throw new IllegalArgumentException("Количество частей не может быть больше размера списка");
+        }
+
+        List<List<T>> result = new ArrayList<>();
+        int size = list.size();
+        int baseSize = size / parts;
+        int extraElements = size % parts;
+        int currentIndex = 0;
+
+        for (int i = 0; i < parts; i++) {
+            int partSize = baseSize + (extraElements > 0 ? 1 : 0);
+            List<T> part = new ArrayList<>();
+            
+            for (int j = 0; j < partSize; j++) {
+                part.add(list.get(currentIndex++));
+            }
+            
+            result.add(part);
+            extraElements--;
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        // Пример с числами
+        List<Integer> numbers = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) {
+            numbers.add(i);
+        }
+
+        int parts = 3;
+        List<List<Integer>> splitNumbers = splitList(numbers, parts);
+        
+        System.out.println("Исходный список: " + numbers);
+        for (int i = 0; i < splitNumbers.size(); i++) {
+            System.out.println("Часть " + (i + 1) + ": " + splitNumbers.get(i));
+        }
+    }
+}
