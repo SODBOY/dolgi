@@ -1,0 +1,36 @@
+public class FibonacciGenerator {
+    public static long[] generateFibonacci(int n) {
+        if (n <= 0) {
+            throw new IllegalArgumentException("n должно быть положительным числом");
+        }
+        
+        long[] fibonacci = new long[n];
+        
+        if (n >= 1) {
+            fibonacci[0] = 0;
+        }
+        if (n >= 2) {
+            fibonacci[1] = 1;
+        }
+        
+        for (int i = 2; i < n; i++) {
+            fibonacci[i] = fibonacci[i-1] + fibonacci[i-2];
+        }
+        
+        return fibonacci;
+    }
+    
+    public static void printArray(long[] arr) {
+        System.out.print("Последовательность Фибоначчи: ");
+        for (long num : arr) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+    }
+    
+    public static void main(String[] args) {
+        int n = 10;
+        long[] fibSequence = generateFibonacci(n);
+        printArray(fibSequence);
+    }
+}
