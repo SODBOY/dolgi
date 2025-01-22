@@ -1,0 +1,85 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class ListMerger {
+    public static <T> List<T> mergeLists(List<T> list1, List<T> list2) {
+        if (list1 == null || list2 == null) {
+            throw new IllegalArgumentException("Списки не могут быть null");
+        }
+
+        List<T> result = new ArrayList<>(list1.size() + list2.size());
+        int i = 0, j = 0;
+        
+        while (i < list1.size() && j < list2.size()) {
+            result.add(list1.get(i++));
+            result.add(list2.get(j++));
+        }
+        
+        // Добавляем оставшиеся элементы из первого списка
+        while (i < list1.size()) {
+            result.add(list1.get(i++));
+        }
+        
+        // Добавляем оставшиеся элементы из второго списка
+        while (j < list2.size()) {
+            result.add(list2.get(j++));
+        }
+        
+        return result;
+    }
+    
+    // Альтернативная версия с указанием порядка слияния
+    public static <T> List<T> mergeListsWithOrder(List<T> list1, List<T> list2, boolean alternating) {
+        if (list1 == null || list2 == null) {
+            throw new IllegalArgumentException("Списки не могут быть null");
+        }
+
+        List<T> result = new ArrayList<>(list1.size() + list2.size());
+        
+        if (alternating) {
+            // Чередующееся слияние
+            int maxSize = Math.max(list1.size(), list2.size());
+            for (int i = 0; i < maxSize; i++) {
+                if (i < list1.size()) {
+                    result.add(list1.get(i));
+                }
+                if (i < list2.size()) {
+                    result.add(list2.get(i));
+                }
+            }
+        } else {
+            // Последовательное слияние
+            result.addAll(list1);
+            result.addAll(list2);
+        }
+        
+        return result;
+    }
+
+    public static void main(String[] args) {
+        // Пример с числами
+        List<Integer> numbers1 = List.of(1, 3, 5);
+        List<Integer> numbers2 = List.of(2, 4, 6, 8);
+
+        System.out.println("Первый список: " + numbers1);
+        System.out.println("Второй список: " + numbers2);
+
+        // Чередующееся слияние
+        List<Integer> mergedAlternating = mergeLists(numbers1, numbers2);
+        System.out.println("Чередующееся слияние: " + mergedAlternating);
+
+        // Последовательное слияние
+        List<Integer> mergedSequential = mergeListsWithOrder(numbers1, numbers2, false);
+        System.out.println("Последовательное слияние: " + mergedSequential);
+
+        // Пример со строками
+        List<String> fruits1 = List.of("apple", "orange", "banana");
+        List<String> fruits2 = List.of("grape", "kiwi");
+
+        System.out.println("\nПервый список строк: " + fruits1);
+        System.out.println("Второй список строк: " + fruits2);
+
+        List<String> mergedFruits = mergeLists(fruits1, fruits2);
+        System.out.println("Чередующееся слияние строк: " + mergedFruits);
+    }
+}
