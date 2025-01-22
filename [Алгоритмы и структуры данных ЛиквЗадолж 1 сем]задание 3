@@ -1,0 +1,58 @@
+public class VersionComparator {
+    public static int compareVersions(String version1, String version2) {
+        if (version1 == null || version2 == null) {
+            throw new IllegalArgumentException("Версии не могут быть null");
+        }
+        
+        if (!version1.matches("\\d+(\\.\\d+)*") || !version2.matches("\\d+(\\.\\d+)*")) {
+            throw new IllegalArgumentException("Неверный формат версии. Используйте формат: x.x.x");
+        }
+
+        String[] parts1 = version1.split("\\.");
+        String[] parts2 = version2.split("\\.");
+        
+        int maxLength = Math.max(parts1.length, parts2.length);
+        
+        for (int i = 0; i < maxLength; i++) {
+            int num1 = i < parts1.length ? Integer.parseInt(parts1[i]) : 0;
+            int num2 = i < parts2.length ? Integer.parseInt(parts2[i]) : 0;
+            
+            if (num1 < num2) {
+                return -1;
+            }
+            if (num1 > num2) {
+                return 1;
+            }
+        }
+        
+        return 0;
+    }
+    
+    public static String compareVersionsVerbose(String version1, String version2) {
+        int result = compareVersions(version1, version2);
+        
+        if (result < 0) {
+            return String.format("Версия %s меньше версии %s", version1, version2);
+        } else if (result > 0) {
+            return String.format("Версия %s больше версии %s", version1, version2);
+        } else {
+            return String.format("Версии %s и %s равны", version1, version2);
+        }
+    }
+    
+    public static void main(String[] args) {
+        // Примеры сравнения версий
+        String[][] testCases = {
+            {"1.2.3", "1.2.4"},
+            {"2.0.0", "1.9.9"},
+            {"1.0", "1.0.0"},
+            {"1.0.0", "1.0"},
+            {"1.10", "1.2"},
+            {"2.1", "2.1.0"}
+        };
+        
+        for (String[] test : testCases) {
+            System.out.println(compareVersionsVerbose(test[0], test[1]));
+        }
+    }
+}
